@@ -1,0 +1,26 @@
+{
+  "name": "soovorow/letter_ape",
+  "type": "yii2-extension",
+
+  "description": "Letter Ape it's free analogy of Mail Chimp for you own app written on Yii2 framework",
+  "keywords": ["yii2", "module", "mailchimp", "letter-ape"],
+  "license": "BSD-3-Clause",
+  "support": {
+    "issues": "https://github.com/soovorow/yii2-letter-ape/issues",
+    "source": "https://github.com/soovorow/yii2-letter-ape"
+  },
+  "authors": [
+    {
+      "name": "Dmitry Suvorov",
+      "email": "soovorow@gmail.com"
+    }
+  ],
+  "require": {
+    "yiisoft/yii2": "*",
+  },
+  "autoload": {
+    "psr-4": {
+      "soovorow\\letter_ape\\": ""
+    }
+  }
+}
