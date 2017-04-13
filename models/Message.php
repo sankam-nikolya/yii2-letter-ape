@@ -48,4 +48,13 @@ class Message extends ActiveRecord
         ];
     }
 
+    /**
+     * Increase opens counter
+     * @return bool
+     */
+    public function trackOpen()
+    {
+        $this->opens > 0 ? $this->opens++ : $this->opens = 1;
+        return $this->save(false);
+    }
 }

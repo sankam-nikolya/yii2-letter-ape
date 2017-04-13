@@ -2,9 +2,14 @@
 
 namespace soovorow\letter_ape\controllers;
 
+use soovorow\letter_ape\models\Click;
 use soovorow\letter_ape\models\Message;
+use Yii;
 use yii\filters\AccessControl;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use yii\web\Response;
+use yii\web\ServerErrorHttpException;
 
 /**
  * @author Dmitry Suvorov <soovorow@gmail.com>
@@ -49,28 +54,57 @@ class ActionController extends Controller
     /**
      * Track message opens
      * @param $key
-     * @return string
+     * @return \yii\console\Response|Response
+     * @throws ServerErrorHttpException
      */
     public function actionTrackOpen($key)
     {
         $message_id = explode('.', $key)[0];
 
         if ($m = Message::findOne($message_id)) {
-            $m->opens > 0 ? $m->opens++ : $m->opens = 1;
-            $m->save(false);
+            $m->trackOpen();
         }
 
-        return $this->renderFile(dirname(__DIR__).'/image.jpg');
+        $response = Yii::$app->response;
+        $response->headers->add('content-type','image/png');
+        $response->format = Response::FORMAT_RAW;
+        $response->stream = @fopen(dirname(__DIR__).'/image.jpg', 'r');
+        return $response;
     }
 
     /**
      * Track message opens
      * @param $message_id
-     * @param null|string $url
+     * @param string $url
+     * @return Response
+     * @throws BadRequestHttpException
      */
-    public function actionTrackClick($message_id, $url = null)
+    public function actionTrackClick($message_id, $url)
     {
+        if (!$m = Message::findOne($message_id)) {
+            throw new BadRequestHttpException();
+        }
 
+        $clickParams = ['message_id' => $message_id, 'url' => $url];
+
+        if (!$c = Click::findOne($clickParams)) {
+            $c = new Click($clickParams);
+        }
+
+        $c->trackClick();
+
+        return $this->redirect($url);
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+

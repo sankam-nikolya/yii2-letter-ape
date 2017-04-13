@@ -13,6 +13,13 @@ namespace soovorow\letter_ape;
  *     ],
  * ],
  *
+ * Add followeing rules into url manager
+ *
+ * [
+ *     'pattern' => '/letter_ape/track-open/<key>',
+ *     'route' => '/letter_ape/action/track-open'
+ * ],
+ *
  * @author Dmitry Suvorov <soovorow@gmail.com>
  *
  */

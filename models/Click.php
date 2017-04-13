@@ -7,9 +7,11 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Migration;
 use yii\db\Schema;
+use yii\helpers\Url;
 
 /**
  * @author Dmitry Suvorov <soovorow@gmail.com>
+ * @property mixed clicks
  */
 class Click extends ActiveRecord
 {
@@ -43,6 +45,26 @@ class Click extends ActiveRecord
         return [
             TimestampBehavior::className()
         ];
+    }
+
+    /**
+     * Create tracking url
+     * @param $to
+     * @return string|Url
+     */
+    public static function createUrl($to)
+    {
+        return Url::to(['/letter-ape/track-click', 'url' => $to], true);
+    }
+
+    /**
+     * Increase click counter
+     * @return bool
+     */
+    public function trackClick()
+    {
+        $this->clicks > 0 ? $this->clicks++ : $this->clicks = 1;
+        return $this->save(false);
     }
 
 }
