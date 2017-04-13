@@ -10,9 +10,8 @@ use yii\db\Schema;
 
 /**
  * @author Dmitry Suvorov <soovorow@gmail.com>
- * @property mixed opens
  */
-class Message extends ActiveRecord
+class Click extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -25,11 +24,9 @@ class Message extends ActiveRecord
             $migration = new Migration();
             $migration->createTable($table_name, [
                 'id' => Schema::TYPE_PK,
-                'email' => Schema::TYPE_STRING,
-                'title' => Schema::TYPE_TEXT,
-                'body' => Schema::TYPE_TEXT,
-                'status' => Schema::TYPE_INTEGER,
-                'opens' => Schema::TYPE_INTEGER,
+                'message_id' => Schema::TYPE_INTEGER,
+                'url' => Schema::TYPE_TEXT,
+                'clicks' => Schema::TYPE_INTEGER,
                 'created_at' => Schema::TYPE_INTEGER,
                 'updated_at' => Schema::TYPE_INTEGER,
             ]);
