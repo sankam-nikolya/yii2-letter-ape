@@ -11,9 +11,18 @@ use yii\db\Schema;
 /**
  * @author Dmitry Suvorov <soovorow@gmail.com>
  * @property mixed opens
+ * @property mixed email
+ * @property mixed title
+ * @property string body
+ * @property mixed id
+ * @property mixed status
  */
 class Message extends ActiveRecord
 {
+    const STATUS_ERROR = 400;
+
+    public $from;
+
     /**
      * @inheritdoc
      */
@@ -46,6 +55,22 @@ class Message extends ActiveRecord
         return [
             TimestampBehavior::className()
         ];
+    }
+
+    /**
+     *
+     */
+    public function send()
+    {
+        $mailer = \Yii::$app->mailer;
+        $mailer->viewPath = dirname(__DIR__).'/mail';
+        return $mailer
+            ->compose('message', ['message' => $this])
+            ->setTo($this->email)
+            ->setSubject($this->title)
+            ->setFrom($this->from)
+            ->send()
+        ;
     }
 
     /**

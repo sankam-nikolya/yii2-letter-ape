@@ -12,6 +12,7 @@ use yii\helpers\Url;
 /**
  * @author Dmitry Suvorov <soovorow@gmail.com>
  * @property mixed clicks
+ * @property mixed message_id
  */
 class Click extends ActiveRecord
 {
@@ -20,7 +21,7 @@ class Click extends ActiveRecord
      */
     public static function tableName()
     {
-        $table_name = 'letter_ape_messages';
+        $table_name = 'letter_ape_click';
 
         if (Yii::$app->db->schema->getTableSchema($table_name) === null) {
             $migration = new Migration();
@@ -64,6 +65,14 @@ class Click extends ActiveRecord
     public function trackClick()
     {
         $this->clicks > 0 ? $this->clicks++ : $this->clicks = 1;
+
+        if ($m = Message::findOne($this->message_id)) {
+            if (!$m->opens > 0) {
+                $m->opens = 1;
+                $m->save(false);
+            }
+        }
+
         return $this->save(false);
     }
 

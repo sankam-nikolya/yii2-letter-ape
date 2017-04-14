@@ -26,7 +26,7 @@ class ActionController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['error', 'track-open', 'track-click'],
+                        'actions' => ['error', 'track-open', 'track-click', 'test'],
                         'allow' => true,
                     ],
                     [
@@ -49,6 +49,28 @@ class ActionController extends Controller
                 'class' => 'yii\web\ErrorAction',
             ],
         ];
+    }
+
+    /**
+     *
+     */
+    public function actionTest()
+    {
+        $m = new Message();
+        $m->title = 'Test message';
+        $m->email = 'soovorow@gmail.com';
+        $m->from = 'managerinternet@madwave.ru';
+        $m->body = 'Test message; <a href="https://www.google.com">Google</a>';
+        if ($m->save(false)) {
+            if ($m->send()) {
+                return 'sent';
+            } else {
+                $m->status = $m::STATUS_ERROR;
+                $m->save(false);
+            }
+        };
+
+        throw new BadRequestHttpException();
     }
 
     /**
