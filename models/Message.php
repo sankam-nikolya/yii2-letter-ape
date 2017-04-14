@@ -16,10 +16,13 @@ use yii\db\Schema;
  * @property string body
  * @property mixed id
  * @property mixed status
+ * @property mixed campaign_id
  */
-class Message extends ActiveRecord
+class Message extends AbstractModel
 {
     const STATUS_ERROR = 400;
+
+    const STATUS_SENT = 200;
 
     public $from;
 
@@ -34,6 +37,7 @@ class Message extends ActiveRecord
             $migration = new Migration();
             $migration->createTable($table_name, [
                 'id' => Schema::TYPE_PK,
+                'campaign_id' => Schema::TYPE_PK,
                 'email' => Schema::TYPE_STRING,
                 'title' => Schema::TYPE_TEXT,
                 'body' => Schema::TYPE_TEXT,
@@ -48,17 +52,8 @@ class Message extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className()
-        ];
-    }
-
-    /**
-     *
+     * Send message
+     * @return bool
      */
     public function send()
     {
@@ -81,5 +76,10 @@ class Message extends ActiveRecord
     {
         $this->opens > 0 ? $this->opens++ : $this->opens = 1;
         return $this->save(false);
+    }
+
+    static function getColumns()
+    {
+        // TODO: Implement getColumns() method.
     }
 }

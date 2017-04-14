@@ -14,7 +14,7 @@ use yii\helpers\Url;
  * @property mixed clicks
  * @property mixed message_id
  */
-class Click extends ActiveRecord
+class Click extends AbstractModel
 {
     /**
      * @inheritdoc
@@ -36,16 +36,6 @@ class Click extends ActiveRecord
         }
 
         return $table_name;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className()
-        ];
     }
 
     /**
@@ -76,4 +66,8 @@ class Click extends ActiveRecord
         return $this->save(false);
     }
 
+    static function getColumns()
+    {
+        // TODO: Implement getColumns() method.
+    }
 }
